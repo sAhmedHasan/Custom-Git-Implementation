@@ -148,9 +148,7 @@ def unpack_and_save_objects(raw_response, target_dir):
     objects_cache = {}
     pending_ref_deltas = []
 
-    # =========================================================================
-    # PASS 1: Extract Base Objects and Queue Deltas
-    # =========================================================================
+
     for _ in range(object_count):
         first_byte = pure_packfile[cursor]
         cursor += 1
@@ -202,9 +200,7 @@ def unpack_and_save_objects(raw_response, target_dir):
             with open(obj_dir / obj_hash[2:], "wb") as f:
                 f.write(zlib.compress(loose_object_content))
 
-    # =========================================================================
-    # PASS 2: Apply REF_DELTAS to Reconstruct Missing Files
-    # =========================================================================
+
     def patch_delta(base_data: bytes, delta_data: bytes) -> bytes:
         """Git's internal algorithm for applying delta instructions."""
         def read_size(data, idx):
